@@ -1,0 +1,70 @@
+﻿{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header">
+    <h1>Transactions</h1>
+    <p class="page-subtitle">Your complete history of buys, sells, and transfers.</p>
+</section>
+
+<section class="transaction-form">
+    <h2>Add Transaction</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Save</button>
+    </form>
+</section>
+
+<section class="transactions-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Coin</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for tx in transactions %}
+            <tr>
+                <td>{{ tx.timestamp|date:"Y-m-d H:i" }}</td>
+                <td>{{ tx.asset.symbol }}</td>
+
+                <td class="{% if tx.tx_type == 'BUY' %}positive{% else %}negative{% endif %}">
+                    {{ tx.tx_type }}
+                </td>
+
+                <td>{{ tx.quantity }}</td>
+                <td>{{ tx.price_per_unit }}</td>
+
+                <!-- ✅ Correct total calculation -->
+                <td>
+                    {% if tx.quantity and tx.price_per_unit %}
+                        {{ tx.quantity|floatformat:8 }} × {{ tx.price_per_unit|floatformat:2 }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td>
+    {% if tx.total %}
+        {{ tx.total|floatformat:2 }}
+    {% else %}
+        —
+    {% endif %}
+</td>
+            </tr>
+
+        {% empty %}
+            <tr>
+                <td colspan="6" class="empty-row">No transactions yet.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}

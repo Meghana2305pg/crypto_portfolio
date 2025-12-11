@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Track, analyze & grow your crypto portfolio.</h1>
+        <p class="hero-subtitle">
+            Real-time insights, price alerts, and portfolio analytics – all in one sleek dashboard.
+        </p>
+        <div class="hero-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn-primary">Go to Dashboard</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn-primary">Get Started</a>
+                <a href="{% url 'login' %}" class="btn-secondary">Log In</a>
+            {% endif %}
+        </div>
+        <div class="hero-meta">
+            <span>✔ Live market tracking</span>
+            <span>✔ Smart alerts</span>
+            <span>✔ Dark fintech UI</span>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="hero-card">
+            <h3>Total Portfolio Value</h3>
+            <p class="hero-balance">$23,482.15</p>
+            <p class="hero-change positive">+8.42% today</p>
+            <div class="hero-mini-stats">
+                <span>BTC · ETH · SOL · MATIC</span>
+            </div>
+        </div>
+
+        <div class="hero-pill-row">
+            <div class="hero-pill">
+                <span class="dot dot-green"></span> Top gainer: SOL +14.2%
+            </div>
+            <div class="hero-pill">
+                <span class="dot dot-blue"></span> Active alerts: 3 coins
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <h2 class="section-title">Built for serious crypto tracking.</h2>
+    <p class="section-subtitle">Everything you need to stay ahead of the market.</p>
+
+    <div class="features-grid">
+        <div class="card feature-card">
+            <h3>Portfolio Overview</h3>
+            <p>See allocation across coins, P&L, and performance over time in one clean view.</p>
+        </div>
+        <div class="card feature-card">
+            <h3>Real-time Prices</h3>
+            <p>Live price updates pulled from market APIs to keep your data fresh.</p>
+        </div>
+        <div class="card feature-card">
+            <h3>Smart Alerts</h3>
+            <p>Set custom alerts so you never miss critical price moves.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-strip">
+    <div class="cta-content">
+        <h2>Ready to level up your crypto tracking?</h2>
+        <p>Start using CoinScope in under a minute.</p>
+    </div>
+    <div class="cta-actions">
+        {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="btn-primary">Open Dashboard</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="btn-primary">Create free account</a>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

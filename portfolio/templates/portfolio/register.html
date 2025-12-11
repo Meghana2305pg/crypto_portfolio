@@ -1,0 +1,41 @@
+﻿{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Create Account</h2>
+        <p class="auth-subtitle">Start tracking your crypto portfolio today.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="auth-field">
+                <label>Username</label>
+                {{ form.username }}
+            </div>
+
+            <div class="auth-field">
+                <label>Email</label>
+                {{ form.email }}
+            </div>
+
+            <div class="auth-field">
+                <label>Password</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="auth-field">
+                <label>Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+
+            <button type="submit" class="btn-primary auth-btn">Register</button>
+        </form>
+
+        <p class="auth-switch">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

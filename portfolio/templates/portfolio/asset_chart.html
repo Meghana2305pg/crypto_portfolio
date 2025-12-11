@@ -1,0 +1,83 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>{{ asset.name }} Price Chart</h2>
+
+  <form method="get" style="margin-bottom:1rem;">
+    {% with days=days|stringformat:"s"|default:"30" %}
+      <label>Time range:
+        <select name="days" onchange="this.form.submit()">
+          <option value="30" {% if days == "30" %}selected{% endif %}>30 days</option>
+          <option value="90" {% if days == "90" %}selected{% endif %}>90 days</option>
+          <option value="365" {% if days == "365" %}selected{% endif %}>365 days</option>
+        </select>
+      </label>
+    {% endwith %}
+  </form>
+
+  <div style="position:relative;height:420px;">
+    <canvas id="priceChart" aria-label="Price chart" role="img"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  {% if chart_data.labels and chart_data.values %}
+  <script>
+  (function() {
+    const labels = {{ chart_data.labels|safe }};
+    const values = {{ chart_data.values|safe }};
+
+    if (!Array.isArray(labels) || !Array.isArray(values) || labels.length === 0 || values.length === 0) {
+      const canvas = document.getElementById('priceChart');
+      const p = document.createElement('p');
+      p.style.color = '#666';
+      p.textContent = 'No chart data available for the selected range.';
+      canvas.parentNode.replaceChild(p, canvas);
+      return;
+    }
+
+    const prettyLabels = labels.map(x => {
+      if (typeof x === 'number' || (!isNaN(Number(x)) && String(x).length >= 10)) {
+        const n = Number(x);
+        const maybeMs = (String(Math.abs(n)).length <= 10) ? n * 1000 : n;
+        return new Date(maybeMs).toLocaleString();
+      }
+      return String(x);
+    });
+
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    if (ctx.__chartInstance) { try { ctx.__chartInstance.destroy(); } catch(e) {} }
+
+    ctx.__chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: prettyLabels,
+        datasets: [{
+          label: '{{ asset.name }} price ({{ currency|default:"USD" }})',
+          data: values.map(v => Number(v)),
+          borderWidth: 2,
+          borderColor: '#2b8cff',
+          backgroundColor: 'rgba(43,140,255,0.08)',
+          tension: 0.12,
+          pointRadius: 0,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: true }, tooltip: { enabled: true } },
+        scales: {
+          x: { display: true, title: { display: true, text: 'Time' } },
+          y: { display: true, title: { display: true, text: 'Price (USD)' } }
+        }
+      }
+    });
+  })();
+  </script>
+  {% else %}
+    <p style="color:#666; margin-top:1rem;">No chart data available for the selected range.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>Price Alerts</h2>
+
+<section class='form-section'>
+    <h3>Create / Update Alert</h3>
+    <form method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit'>Save Alert</button>
+    </form>
+</section>
+
+<section>
+    <h3>Your Alerts</h3>
+    {% if alerts %}
+    <table>
+        <thead>
+            <tr>
+                <th>Asset</th>
+                <th>Target Price</th>
+                <th>Currency</th>
+                <th>Direction</th>
+                <th>Active</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for a in alerts %}
+            <tr>
+                <td>{{ a.asset.name }} ({{ a.asset.symbol }})</td>
+                <td>{{ a.target_price }}</td>
+                <td>{{ a.currency }}</td>
+                <td>{% if a.is_above %}Above{% else %}Below{% endif %}</td>
+                <td>{{ a.active }}</td>
+                <td>{{ a.created_at }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No alerts yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

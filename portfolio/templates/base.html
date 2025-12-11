@@ -1,0 +1,104 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>CoinScope</title>
+    <link rel='stylesheet' href='{% static "css/styles.css" %}'>
+    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+    <style>
+/* Light mode: dark text */
+.table td, .table th {
+  color: #1a1a1a;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Dark mode: light text */
+body.dark-mode .table td,
+body.dark-mode .table th {
+  color: #E4ECF4;
+}
+
+/* Remove hover effect */
+.table tbody tr:hover {
+  background-color: transparent !important;
+  cursor: default !important;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+
+        <!-- ✅ Compact circular logo (top-left) -->
+        <a href="{% url 'dashboard' %}">
+            <img src="{% static 'logo.png' %}" alt="CoinScope Logo" class="logo">
+        </a>
+
+        <!-- ✅ Navigation (top-right) -->
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href='{% url "dashboard" %}'>Dashboard</a></li>
+                    <li><a href='{% url "transactions" %}'>Transactions</a></li>
+                    <li><a href='{% url "price_alerts" %}'>Price Alerts</a></li>
+                    <li><a href='{% url "logout" %}'>Logout ({{ user.username }})</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><button id="theme-toggle" class="btn-dark-toggle">Dark Mode</button></li>
+                {% else %}
+                    <li><a href='{% url "login" %}'>Login</a></li>
+                    <li><a href='{% url "register" %}'>Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <div class="container">
+        <small>Timezone: Asia/Kolkata | Demo app</small>
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const body = document.body;
+    const toggle = document.getElementById("theme-toggle");
+
+    if (localStorage.getItem("theme") === "dark") {
+        body.classList.add("dark-mode");
+        toggle.textContent = "Light Mode";
+    }
+
+    toggle.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+
+        if (body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+            toggle.textContent = "Light Mode";
+        } else {
+            localStorage.setItem("theme", "light");
+            toggle.textContent = "Dark Mode";
+        }
+    });
+});
+</script>
+
+</body>
+</html>

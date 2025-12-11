@@ -1,0 +1,31 @@
+﻿{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Welcome Back</h2>
+        <p class="auth-subtitle">Log in to continue tracking your portfolio.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="auth-field">
+                <label>Username</label>
+                {{ form.username }}
+            </div>
+
+            <div class="auth-field">
+                <label>Password</label>
+                {{ form.password }}
+            </div>
+
+            <button type="submit" class="btn-primary auth-btn">Login</button>
+        </form>
+
+        <p class="auth-switch">
+            New here? <a href="{% url 'register' %}">Create an account</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

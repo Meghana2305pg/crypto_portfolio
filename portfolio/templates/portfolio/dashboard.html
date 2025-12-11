@@ -1,0 +1,134 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<section class="dashboard-hero">
+    <h1>Your Portfolio</h1>
+    <p class="dashboard-subtitle">Live performance, allocation, and market insights.</p>
+</section>
+
+<!-- ✅ Portfolio Distribution (Pie Chart) -->
+<section class="dashboard-chart">
+    <h2>Portfolio Distribution</h2>
+    <div class="pie-wrapper no-bg">
+        <canvas id="portfolioPieChart"></canvas>
+    </div>
+</section>
+
+<!-- ✅ Portfolio Value Over Time (Line Chart) -->
+<section class="dashboard-chart">
+    <h2>Portfolio Value Over Time</h2>
+    <canvas id="portfolioLineChart"></canvas>
+</section>
+
+<!-- ✅ Holdings Table -->
+<section class="dashboard-table">
+    <h2>Holdings (FIFO)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Asset</th>
+                <th>Quantity</th>
+                <th>Avg Cost</th>
+                <th>Total Cost</th>
+                <th>Current Price</th>
+                <th>Current Value</th>
+                <th>Unrealized P/L</th>
+                <th>Chart</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, h in holdings.items %}
+            <tr>
+                <td>{{ h.asset.symbol }}</td>
+                <td>{{ h.quantity }}</td>
+                <td>{{ h.avg_cost }} {{ currency }}</td>
+                <td>{{ h.total_cost }} {{ currency }}</td>
+                <td>{{ h.current_price }} {{ currency }}</td>
+                <td>{{ h.current_value }} {{ currency }}</td>
+
+                <td class="{% if h.unrealized_pl >= 0 %}positive{% else %}negative{% endif %}">
+                    {{ h.unrealized_pl }} {{ currency }}
+                </td>
+
+                <td>
+                    <a href="{% url 'asset_chart' h.asset.id %}" class="btn-secondary">View</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No holdings yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<!-- ✅ PIE CHART SCRIPT -->
+<script>
+const pieCtx = document.getElementById('portfolioPieChart').getContext('2d');
+
+new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+        labels: {{ labels|safe }},
+        datasets: [{
+            data: {{ values|safe }},
+            backgroundColor: [
+                '#00C2FF',
+                '#FF6B6B',
+                '#FFD166',
+                '#06D6A0',
+                '#8338EC'
+            ],
+            borderColor: '#121C2E',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,   /* ✅ STEP 3 */
+        plugins: {
+            legend: { labels: { color: '#C8D1E4' } }
+        }
+    }
+});
+</script>
+
+<!-- ✅ LINE CHART SCRIPT -->
+<script>
+const lineCtx = document.getElementById('portfolioLineChart').getContext('2d');
+
+new Chart(lineCtx, {
+    type: 'line',
+    data: {
+        labels: {{ history_labels|safe }},
+        datasets: [{
+            label: 'Portfolio Value',
+            data: {{ history_values|safe }},
+            borderColor: '#00C2FF',
+            backgroundColor: 'rgba(0,194,255,0.2)',
+            tension: 0.3,
+            fill: true
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                ticks: { color: '#C8D1E4' },
+                grid: { color: 'rgba(255,255,255,0.05)' }
+            },
+            y: {
+                ticks: { color: '#C8D1E4' },
+                grid: { color: 'rgba(255,255,255,0.05)' }
+            }
+        },
+        plugins: {
+            legend: { labels: { color: '#C8D1E4' } }
+        }
+    }
+});
+</script>
+
+{% endblock %}
