@@ -1,0 +1,23 @@
+# ✅ Issues & Resolutions — CoinScope
+
+## Issue 1 — Total Column Not Showing
+**Cause:** Template attempted to compute math using invalid Django syntax  
+**Fix:** Compute total in view and pass `tx.total` to template  
+
+---
+
+## Issue 2 — Chart Not Loading
+**Cause:** Wrong URL name in JavaScript fetch call  
+**Fix:** Updated URL pattern and corrected fetch endpoint  
+
+---
+
+## Issue 3 — Dark Mode Not Applying
+**Cause:** Missing CSS variable overrides  
+**Fix:** Added dark theme variables and toggle logic  
+
+---
+
+## Issue 4 — Git Push Error (400 Bad Request)
+**Cause:** Incorrect GitHub remote URL with `< >`  
+**Fix:** Removed remote and added correct URL  

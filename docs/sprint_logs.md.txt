@@ -1,0 +1,33 @@
+# ✅ Sprint Logs — CoinScope Crypto Portfolio Tracker
+
+## Sprint 1 — Project Setup
+- Created Django project structure
+- Set up virtual environment
+- Installed dependencies
+- Created initial models (Asset, Transaction)
+- Configured admin panel
+
+## Sprint 2 — Transaction System
+- Built TransactionForm
+- Added transaction creation page
+- Implemented transaction table UI
+- Added pagination
+- Fixed total calculation logic
+
+## Sprint 3 — Dashboard & Charts
+- Added dashboard view
+- Integrated CoinGecko API
+- Implemented price charts using Chart.js
+- Added holdings summary
+
+## Sprint 4 — UI/UX Enhancements
+- Added dark mode theme
+- Improved table styling
+- Added positive/negative color coding
+- Cleaned layout and spacing
+
+## Sprint 5 — Documentation & Deployment Prep
+- Added README.md
+- Added MIT License
+- Created Agile documentation
+- Prepared project for deployment

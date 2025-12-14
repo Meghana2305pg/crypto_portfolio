@@ -1,0 +1,23 @@
+# ✅ Final Summary — CoinScope Crypto Portfolio Tracker
+
+CoinScope is a full‑stack Django application designed to help users track cryptocurrency transactions, holdings, and real‑time price analytics. The project was built using an Agile approach with iterative sprints focusing on backend logic, UI/UX, API integration, and deployment readiness.
+
+## ✅ Key Achievements
+- Fully functional transaction management system  
+- Real‑time price charts using CoinGecko API  
+- Clean, responsive UI with dark mode  
+- FIFO‑based holdings calculation  
+- Pagination, sorting, and improved UX  
+- Professional GitHub documentation  
+- Ready for deployment  
+
+## ✅ Agile Execution
+The project followed 5 sprints, each delivering incremental value. Issues were tracked and resolved systematically, ensuring continuous improvement and stability.
+
+## ✅ Outcome
+The final application is stable, user‑friendly, and production‑ready. It demonstrates strong backend development, API integration, UI/UX design, and documentation practices.
+
+---
+
+**Author:** Meghana  
+**Year:** 2025  
