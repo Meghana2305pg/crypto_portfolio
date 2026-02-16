@@ -1,71 +1,85 @@
 ﻿{% extends 'base.html' %}
 {% block content %}
 
-<h2>Dashboard</h2>
+<div class="dashboard-container">
 
-<section class="dashboard-hero">
-    <h1>Your Portfolio</h1>
-    <p class="dashboard-subtitle">Live performance, allocation, and market insights.</p>
-</section>
-
-<!-- ✅ Portfolio Distribution (Pie Chart) -->
-<section class="dashboard-chart">
-    <h2>Portfolio Distribution</h2>
-    <div class="pie-wrapper no-bg">
-        <canvas id="portfolioPieChart"></canvas>
+    <!-- Header -->
+    <div class="dashboard-top">
+        <h1>Dashboard</h1>
+        <p class="dashboard-subtitle">
+            Live performance, allocation & market insights.
+        </p>
     </div>
-</section>
 
-<!-- ✅ Portfolio Value Over Time (Line Chart) -->
-<section class="dashboard-chart">
-    <h2>Portfolio Value Over Time</h2>
-    <canvas id="portfolioLineChart"></canvas>
-</section>
+    <!-- Charts Grid -->
+    <div class="dashboard-grid">
 
-<!-- ✅ Holdings Table -->
-<section class="dashboard-table">
-    <h2>Holdings (FIFO)</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Asset</th>
-                <th>Quantity</th>
-                <th>Avg Cost</th>
-                <th>Total Cost</th>
-                <th>Current Price</th>
-                <th>Current Value</th>
-                <th>Unrealized P/L</th>
-                <th>Chart</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for key, h in holdings.items %}
-            <tr>
-                <td>{{ h.asset.symbol }}</td>
-                <td>{{ h.quantity }}</td>
-                <td>{{ h.avg_cost }} {{ currency }}</td>
-                <td>{{ h.total_cost }} {{ currency }}</td>
-                <td>{{ h.current_price }} {{ currency }}</td>
-                <td>{{ h.current_value }} {{ currency }}</td>
+        <!-- Line Chart (2/3 width) -->
+        <div class="dashboard-card large-card">
+            <h3>Portfolio Value Over Time</h3>
+            <canvas id="portfolioLineChart"></canvas>
+        </div>
 
-                <td class="{% if h.unrealized_pl >= 0 %}positive{% else %}negative{% endif %}">
-                    {{ h.unrealized_pl }} {{ currency }}
-                </td>
+        <!-- Pie Chart (1/3 width) -->
+        <div class="dashboard-card small-card">
+            <h3>Asset Allocation</h3>
+            <div class="pie-wrapper no-bg">
+                <canvas id="portfolioPieChart"></canvas>
+            </div>
+        </div>
 
-                <td>
-                    <a href="{% url 'asset_chart' h.asset.id %}" class="btn-secondary">View</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="8">No holdings yet.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
+    </div>
 
-<!-- ✅ PIE CHART SCRIPT -->
+    <!-- Holdings Table -->
+    <div class="dashboard-card">
+        <h3>Holdings (FIFO)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Quantity</th>
+                    <th>Avg Cost</th>
+                    <th>Total Cost</th>
+                    <th>Current Price</th>
+                    <th>Current Value</th>
+                    <th>Unrealized P/L</th>
+                    <th>Chart</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, h in holdings.items %}
+                <tr>
+                    <td>{{ h.asset.symbol }}</td>
+                    <td>{{ h.quantity }}</td>
+                    <td>{{ h.avg_cost }} {{ currency }}</td>
+                    <td>{{ h.total_cost }} {{ currency }}</td>
+                    <td>{{ h.current_price }} {{ currency }}</td>
+                    <td>{{ h.current_value }} {{ currency }}</td>
+
+                    <td class="{% if h.unrealized_pl >= 0 %}positive{% else %}negative{% endif %}">
+                        {{ h.unrealized_pl }} {{ currency }}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'asset_chart' h.asset.id %}" class="btn-secondary">
+                            View
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">No holdings yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- ===== EXISTING CHART SCRIPTS (UNCHANGED) ===== -->
+
 <script>
 const pieCtx = document.getElementById('portfolioPieChart').getContext('2d');
 
@@ -88,7 +102,7 @@ new Chart(pieCtx, {
     },
     options: {
         responsive: true,
-        maintainAspectRatio: false,   /* ✅ STEP 3 */
+        maintainAspectRatio: false,
         plugins: {
             legend: { labels: { color: '#C8D1E4' } }
         }
@@ -96,7 +110,6 @@ new Chart(pieCtx, {
 });
 </script>
 
-<!-- ✅ LINE CHART SCRIPT -->
 <script>
 const lineCtx = document.getElementById('portfolioLineChart').getContext('2d');
 

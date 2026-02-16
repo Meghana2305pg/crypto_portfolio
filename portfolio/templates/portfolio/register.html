@@ -12,28 +12,29 @@
             <div class="auth-field">
                 <label>Username</label>
                 {{ form.username }}
-            </div>
-
-            <div class="auth-field">
-                <label>Email</label>
-                {{ form.email }}
+                {{ form.username.errors }}
             </div>
 
             <div class="auth-field">
                 <label>Password</label>
                 {{ form.password1 }}
+                {{ form.password1.errors }}
             </div>
 
             <div class="auth-field">
                 <label>Confirm Password</label>
                 {{ form.password2 }}
+                {{ form.password2.errors }}
             </div>
 
-            <button type="submit" class="btn-primary auth-btn">Register</button>
+            <button type="submit" class="btn-primary auth-btn">
+                Register
+            </button>
         </form>
 
         <p class="auth-switch">
-            Already have an account? <a href="{% url 'login' %}">Login</a>
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
         </p>
     </div>
 </div>

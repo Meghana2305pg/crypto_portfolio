@@ -21,17 +21,21 @@ from .utils import compute_fifo_for_user, get_simple_price, save_daily_snapshot,
 
 
 
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+
 def register(request):
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            messages.success(request, 'Registration successful. You can now log in.')
-            login(request, user)
-            return redirect('dashboard')
+            form.save()
+            return redirect("login")
     else:
-        form = RegisterForm()
-    return render(request, 'portfolio/register.html', {'form': form})
+        form = UserCreationForm()
+
+    return render(request, "portfolio/register.html", {"form": form})
+
+
 
 
 @login_required
